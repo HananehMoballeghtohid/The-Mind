@@ -1,7 +1,7 @@
 package Model.Card;
 import Model.Player.Player;
 
-public class NumberCard extends Card {
+public class NumberCard {
 
     int number;
     Player player;
