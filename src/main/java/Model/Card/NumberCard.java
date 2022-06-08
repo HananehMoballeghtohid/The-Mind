@@ -1,6 +1,4 @@
 package Model.Card;
-
-import Model.Card.Card;
 import Model.Player.Player;
 
 public class NumberCard extends Card {
