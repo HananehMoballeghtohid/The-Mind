@@ -1,4 +1,6 @@
-package Model;
+package Model.Card;
+
+import Model.Card.Card;
 
 public class HeartCard extends Card {
 

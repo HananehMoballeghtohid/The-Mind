@@ -1,4 +1,6 @@
-package Model;
+package Model.Card;
+
+import Model.Player.Player;
 
 public class NinjaCard {
 

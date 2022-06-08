@@ -1,4 +1,4 @@
-package Model;
+package Model.Card;
 
 public class LevelCard extends Card {
 
