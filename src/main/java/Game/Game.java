@@ -43,6 +43,25 @@ public class Game {
         return true;
     }
 
+    public void playCard(NumberCard card){
+        gameState.getPlayedCards().add(0,card);
+        boolean correctCard = true;
+        for (Player player:gameState.getPlayers()){
+            if (player.getHand().get(0).getNumber()<card.getNumber()){
+                correctCard = false;
+                for (NumberCard lowerCard:player.getHand()){
+                    if (lowerCard.getNumber()<card.getNumber()){
+                        gameState.getPlayedCards().add(lowerCard);
+                    }
+                }
+                player.getHand().removeAll(gameState.getPlayedCards());
+            }
+        }
+        if (!correctCard){
+            reduceLive();
+        }
+    }
+
     
 
 }

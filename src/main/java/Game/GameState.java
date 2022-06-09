@@ -1,6 +1,7 @@
 package Game;
 
 import Model.Card.Deck;
+import Model.Card.NumberCard;
 import Model.Player.Player;
 
 import java.util.ArrayList;
@@ -17,12 +18,15 @@ public class GameState {
 
     private Deck deck;
 
+    private ArrayList<NumberCard> playedCards ;
+
     public GameState(ArrayList<Player> players){
         this.players =players;
         lives = players.size();
         deck = new Deck();
         ninjas=2;
         level=1;
+        playedCards = new ArrayList<>();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -59,5 +63,9 @@ public class GameState {
 
     public Deck getDeck() {
         return deck;
+    }
+
+    public ArrayList<NumberCard> getPlayedCards() {
+        return playedCards;
     }
 }
