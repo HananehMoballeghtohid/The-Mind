@@ -1,10 +1,10 @@
 package Game;
-import Model.Card.Deck;
+
 import Model.Card.NumberCard;
 import Model.Player.Player;
 
-import javax.smartcardio.Card;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game {
 
@@ -32,6 +32,7 @@ public class Game {
                 gameState.getDeck().getDeck().remove(0);
             }
             player.setHand(hand);
+            player.sortHand();
         }
     }
 
