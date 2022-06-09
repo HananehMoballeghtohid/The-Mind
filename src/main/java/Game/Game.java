@@ -1,9 +1,6 @@
 package Game;
-import Model.Card.Deck;
 import Model.Card.NumberCard;
 import Model.Player.Player;
-
-import javax.smartcardio.Card;
 import java.util.ArrayList;
 
 public class Game {
@@ -32,7 +29,20 @@ public class Game {
                 gameState.getDeck().getDeck().remove(0);
             }
             player.setHand(hand);
+            player.sortHand();
         }
     }
+
+    public boolean isContinued(){
+        if(gameState.getLives()==0){
+            return false;
+        }
+        if (gameState.getDeck().getDeck().size()<gameState.getPlayers().size()* gameState.getLevel()){
+            return false;
+        }
+        return true;
+    }
+
+    
 
 }

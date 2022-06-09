@@ -1,8 +1,6 @@
 package Model.Player;
 
 import Model.Card.NumberCard;
-
-import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
