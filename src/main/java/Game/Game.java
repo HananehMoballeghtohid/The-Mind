@@ -2,6 +2,8 @@ package Game;
 import Model.Card.Deck;
 import Model.Card.NumberCard;
 import Model.Player.Player;
+
+import javax.smartcardio.Card;
 import java.util.ArrayList;
 
 public class Game {
