@@ -4,7 +4,6 @@ import Model.Player.Player;
 public class NumberCard {
 
     int number;
-    Player player;
 
     public NumberCard(int number) {
         this.number = number;
@@ -18,12 +17,8 @@ public class NumberCard {
         this.number = number;
     }
 
-    public Player getPlayer() {
-        return player;
+    @Override
+    public String toString() {
+        return String.valueOf(number);
     }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
 }

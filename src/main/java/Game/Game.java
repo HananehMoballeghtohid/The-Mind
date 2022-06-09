@@ -37,10 +37,7 @@ public class Game {
         if(gameState.getLives()==0){
             return false;
         }
-        if (gameState.getDeck().getDeck().size()<gameState.getPlayers().size()* gameState.getLevel()){
-            return false;
-        }
-        return true;
+        return gameState.getDeck().getDeck().size() >= gameState.getPlayers().size() * gameState.getLevel();
     }
 
     public void playCard(NumberCard card){

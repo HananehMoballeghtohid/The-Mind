@@ -18,7 +18,7 @@ public class GameState {
 
     private Deck deck;
 
-    private ArrayList<NumberCard> playedCards ;
+    private ArrayList<NumberCard> playedCards;
 
     public GameState(ArrayList<Player> players){
         this.players =players;
@@ -67,5 +67,18 @@ public class GameState {
 
     public ArrayList<NumberCard> getPlayedCards() {
         return playedCards;
+    }
+
+    @Override
+    public String toString() {
+        return "Game state:" +
+                "\nlives: " + lives +
+                "\nninjas: " + ninjas +
+                "\nlevel: " + level +
+                "\nleft cards: " + deck.getDeck().size() +
+                // players.get(0) represents human
+                "\nyour cards: " + getPlayers().get(0).getHand() +
+                "\nplayed cards: " + playedCards
+                ;
     }
 }
