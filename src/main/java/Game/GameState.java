@@ -75,7 +75,7 @@ public class GameState {
                 "\nlives: " + lives +
                 "\nninjas: " + ninjas +
                 "\nlevel: " + level +
-                "\nleft cards: " + deck.getDeck().size() +
+                "\nleft cards: " + deck.getSize() +
                 // players.get(0) represents human
                 "\nyour cards: " + getPlayers().get(0).getHand() +
                 "\nplayed cards: " + playedCards

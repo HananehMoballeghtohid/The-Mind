@@ -21,6 +21,12 @@ public class Deck {
     public NumberCard getCard(int i) {
         return deck.get(i);
     }
+    public void remove(int i) {
+        deck.remove(i);
+    }
+    public int getSize() {
+        return deck.size();
+    }
 
     public void setDeck(ArrayList<NumberCard> deck) {
         this.deck = deck;

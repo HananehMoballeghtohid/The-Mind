@@ -25,8 +25,8 @@ public class Game {
             ArrayList<NumberCard> hand = new ArrayList<>();
             gameState.getDeck().shuffle();
             for (int i = 0; i < level; i++) {
-                hand.add(gameState.getDeck().getDeck().get(0));
-                gameState.getDeck().getDeck().remove(0);
+                hand.add(gameState.getDeck().getCard(0));
+                gameState.getDeck().remove(0);
             }
             player.setHand(hand);
             player.sortHand();
@@ -37,7 +37,7 @@ public class Game {
         if(gameState.getLives()==0){
             return false;
         }
-        return gameState.getDeck().getDeck().size() >= gameState.getPlayers().size() * gameState.getLevel();
+        return gameState.getDeck().getSize() >= gameState.getPlayers().size() * gameState.getLevel();
     }
 
     public void playCard(NumberCard card){
