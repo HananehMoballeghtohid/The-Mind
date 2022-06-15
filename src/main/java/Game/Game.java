@@ -12,12 +12,15 @@ public class Game {
     }
 
     public void nextLevel(){
-        gameState.setLevel(gameState.getLevel()+1);
-        setHands(gameState.getLevel());
+        int level = gameState.getLevel() + 1;
+        gameState.setLevel(level);
+        setHands(level);
+        addLife(level);
+        addNinjas(level);
     }
 
     public void reduceLive(){
-        gameState.setLives(gameState.getLives()-1);
+        gameState.setLives(gameState.getLives() - 1);
     }
 
     public void setHands(int level) {
@@ -33,22 +36,22 @@ public class Game {
         }
     }
 
-    public boolean isContinued(){
-        if(gameState.getLives()==0){
-            return false;
+    public boolean isFinished() {
+        if (gameState.getLives() == 0) {
+            return true;
         }
-        return gameState.getDeck().getSize() >= gameState.getPlayers().size() * gameState.getLevel();
+        return gameState.getLevel() > 12;
     }
 
     public void playCard(NumberCard card){
-        gameState.getPlayedCards().add(0,card);
+        gameState.addToPlayedCards(0, card);
         boolean correctCard = true;
         for (Player player:gameState.getPlayers()){
-            if (player.getHand().get(0).getNumber()<card.getNumber()){
+            if (player.getCardFromHand(0).getNumber()<card.getNumber()){
                 correctCard = false;
                 for (NumberCard lowerCard:player.getHand()){
                     if (lowerCard.getNumber()<card.getNumber()){
-                        gameState.getPlayedCards().add(lowerCard);
+                        gameState.addToPlayedCards(card);
                     }
                 }
                 player.getHand().removeAll(gameState.getPlayedCards());
@@ -59,6 +62,38 @@ public class Game {
         }
     }
 
-    
+    private void addLife(int level) {
+        if (level == 3 ||
+        level == 6 || level == 9) {
+            gameState.setLives(gameState.getLives() + 1);
+        }
+    }
 
+    private void addNinjas(int level) {
+        if (level == 2 ||
+                level == 5 || level == 8) {
+            gameState.setNinjas(gameState.getNinjas() + 1);
+        }
+    }
+
+    private void playNinja() {
+        NumberCard max = new NumberCard(0);
+        for (Player player : gameState.getPlayers()) {
+            NumberCard played = player.play();
+            gameState.addToPlayedCards(played);
+            if (played.getNumber() > max.getNumber()) {
+                max = played;
+            }
+        }
+        for (Player player : gameState.getPlayers()){
+            if (player.getCardFromHand(0).getNumber() < max.getNumber()){
+                for (NumberCard playerCard : player.getHand()){
+                    if (playerCard.getNumber() < max.getNumber()){
+                        gameState.addToPlayedCards(playerCard);
+                    }
+                }
+                player.getHand().removeAll(gameState.getPlayedCards());
+            }
+        }
+    }
 }

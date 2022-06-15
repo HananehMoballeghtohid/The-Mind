@@ -65,6 +65,17 @@ public class GameState {
         return deck;
     }
 
+    public NumberCard getPlayedCard(int i) {
+        return playedCards.get(i);
+    }
+
+    public void addToPlayedCards(int i, NumberCard card) {
+        playedCards.add(i, card);
+    }
+    public void addToPlayedCards(NumberCard card) {
+        playedCards.add(card);
+    }
+
     public ArrayList<NumberCard> getPlayedCards() {
         return playedCards;
     }
@@ -76,9 +87,7 @@ public class GameState {
                 "\nninjas: " + ninjas +
                 "\nlevel: " + level +
                 "\nleft cards: " + deck.getSize() +
-                // players.get(0) represents human
-                "\nyour cards: " + getPlayers().get(0).getHand() +
-                "\nplayed cards: " + playedCards
-                ;
+                "\nplayed cards: " + playedCards +
+                "\n"; // print player cards
     }
 }

@@ -29,5 +29,7 @@ public abstract class Player {
             hand.add(treeMap.get(i));
         }
     }
-
+    public NumberCard getCardFromHand(int i) {
+        return hand.get(i);
+    }
 }
