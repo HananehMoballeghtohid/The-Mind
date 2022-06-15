@@ -10,4 +10,8 @@ public class Human extends Player {
         getHand().remove(0);
         return card;
     }
+    @Override
+    public String toString() {
+        return "your cards: " + hand.toString();
+    }
 }
