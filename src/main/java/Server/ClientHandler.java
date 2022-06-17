@@ -7,6 +7,7 @@ public class ClientHandler implements Runnable {
     private final Socket socket ;
     private final Connection connection;
     private final int id ;
+    private GameHandler gameHandler;
     private boolean host;
     private final Server server;
     private String name;
@@ -24,15 +25,14 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         System.out.println("Client Handler is running...");
-        connection.send(new Message("enter your name: ", null));
+        connection.send(new Message("enter your name: ", token));
         setName();
         ClientToGame();
-
-
+        waitForStart();
     }
 
     private void setName(){
-        name = connection.receive();
+        name = getMessageContent(new Message(connection.receive()));
         System.out.println("New Client's name is " + name);
         System.out.println("New Client's token is: " + token);
     }
@@ -41,17 +41,17 @@ public class ClientHandler implements Runnable {
         boolean incorrectAnswer = true;
         while (incorrectAnswer){
             connection.send(new Message("Your token is: " + token + "   1.Create new Game. 2.Join a game.", token));
-            String inputFromClient = connection.receive();
+            String inputFromClient = getMessageContent(new Message(connection.receive()));
             switch (inputFromClient) {
                 case "1" :
                     boolean invalidInput = true;
                     while (invalidInput) {
                         connection.send(new Message("Enter number of players: ", token));
-                        String inputNumberOfPlayers = connection.receive();
+                        String inputNumberOfPlayers = getMessageContent(new Message(connection.receive()));
                         try {
                             int numberOfPlayers = Integer.parseInt(inputNumberOfPlayers);
                             setHost();
-                            GameHandler gameHandler = new GameHandler(numberOfPlayers);
+                            this.gameHandler = new GameHandler(numberOfPlayers);
                             server.addGame(gameHandler);
                             gameHandler.addPlayer(this);
                             connection.send(new Message("Game created successfully. ", token));
@@ -77,6 +77,8 @@ public class ClientHandler implements Runnable {
                     }
                     if (availableGame) {
                         availableGameHandler.addPlayer(this);
+                        this.gameHandler=availableGameHandler;
+                        gameHandler.MessageToHost(name+" joined to the game.");
                         connection.send(new Message("You successfully joined a game.", token));
                         System.out.println(token + " joined game number " + server.getGameHandlers().indexOf(availableGameHandler));
                         incorrectAnswer = false;
@@ -91,8 +93,50 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    private void waitForStart(){
+        connection.send(new Message("waiting for others to join...",token));
+        if (isHost()){
+            connection.send(new Message("to start the game enter 1",token));
+            String input = getMessageContent(new Message(connection.receive()));
+            switch (input){
+                case "1":
+                    gameHandler.startGame();
+                    break;
+                default:
+                    connection.send(new Message("Invalid input!",token));
+            }
+
+        }
+    }
+
+    private String getMessageContent(Message message){
+        if (message.getAuthToken().equals(token)){
+            return message.getContent();
+        }
+        return "";
+    }
+
     public void setHost(){
         host = true;
     }
 
+    public boolean isHost(){
+        return host;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public GameHandler getGameHandler() {
+        return gameHandler;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

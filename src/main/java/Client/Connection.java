@@ -1,13 +1,14 @@
 package Client;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.IOException;
 import java.net.Socket;
 
 public class Connection {
 
-    private final PrintStream out;
+    private final PrintWriter out;
     private final Scanner in;
 
     /**
@@ -18,11 +19,12 @@ public class Connection {
 
     public Connection(Socket socket) throws IOException {
         in = new Scanner(socket.getInputStream());
-        out = new PrintStream(socket.getOutputStream());
+        out = new PrintWriter(socket.getOutputStream());
     }
 
     public void send(String message) {
         out.println(message);
+        out.flush();
     }
 
     public void send(Object obj) {

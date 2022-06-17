@@ -12,6 +12,12 @@ public class Message implements Serializable {
         this.authToken = authToken;
     }
 
+    public Message(String message){
+        String[] contentToken = message.split("/-/");
+        content=contentToken[0];
+        authToken=contentToken[1];
+    }
+
     public String getContent() {
         return content;
     }
@@ -22,7 +28,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return content;
+        return content +"/-/"+authToken;
     }
 
 }

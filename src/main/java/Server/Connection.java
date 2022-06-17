@@ -2,12 +2,13 @@ package Server;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Connection {
 
-    private final PrintStream out;
+    private final PrintWriter out;
     private final Scanner in;
     /**
      * constructor used by the server
@@ -17,11 +18,12 @@ public class Connection {
 
     public Connection(Socket socket) throws IOException {
         in = new Scanner(socket.getInputStream());
-        out = new PrintStream(socket.getOutputStream());
+        out = new PrintWriter(socket.getOutputStream());
     }
 
     public void send(String message) {
         out.println(message);
+        out.flush();
     }
 
     public void send(Object obj) {
