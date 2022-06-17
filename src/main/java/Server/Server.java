@@ -1,5 +1,7 @@
 package Server;
 
+import AuthenticationToken.AuthTokenGenerator;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 public class Server {
     private final ArrayList<ClientHandler> clientHandlers;
     private final ArrayList<GameHandler> gameHandlers;
+    private AuthTokenGenerator authTokenGenerator = new AuthTokenGenerator();
 
     public Server(){
         clientHandlers = new ArrayList<>();
@@ -17,8 +20,8 @@ public class Server {
     public void init() throws IOException {
         System.out.println("Server is Running");
         ServerSocket serverSocket = new ServerSocket(8000);
+        System.out.println("Waiting for a connection");
         while (true){
-            System.out.println("Waiting for a connection");
             Socket socket = serverSocket.accept();
             ClientHandler clientHandler = new ClientHandler(socket,clientHandlers.size(),this);
             System.out.println("New connection Accepted.");
@@ -34,5 +37,17 @@ public class Server {
 
     public ArrayList<GameHandler> getGameHandlers(){
         return gameHandlers;
+    }
+
+    public ArrayList<ClientHandler> getClientHandlers() {
+        return clientHandlers;
+    }
+
+    public AuthTokenGenerator getAuthTokenGenerator() {
+        return authTokenGenerator;
+    }
+
+    public void setAuthTokenGenerator(AuthTokenGenerator authTokenGenerator) {
+        this.authTokenGenerator = authTokenGenerator;
     }
 }

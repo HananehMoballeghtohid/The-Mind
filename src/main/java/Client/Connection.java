@@ -3,7 +3,6 @@ package Client;
 import java.io.PrintStream;
 import java.util.Scanner;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Socket;
 
 public class Connection {
@@ -35,9 +34,13 @@ public class Connection {
      *  otherwise blocks
      */
     public String receive() {
-        if (in.hasNextLine())
-            return in.nextLine();
-        return null;
+        while (in.nextLine() == null) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+            }
+        }
+        return in.nextLine();
     }
     /**
      *  @return true if there is new message
@@ -45,10 +48,6 @@ public class Connection {
      */
     public boolean hasNextLine() {
         return in.hasNextLine();
-    }
-
-    public void sendObject(Serializable object) {
-        send(object.toString());
     }
 
     /**

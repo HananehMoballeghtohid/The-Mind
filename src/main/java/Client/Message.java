@@ -19,4 +19,10 @@ public class Message implements Serializable {
     public String getAuthToken() {
         return authToken;
     }
+
+    @Override
+    public String toString() {
+        return content;
+    }
+
 }

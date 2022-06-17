@@ -2,7 +2,6 @@ package Server;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.Serializable;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -10,6 +9,11 @@ public class Connection {
 
     private final PrintStream out;
     private final Scanner in;
+    /**
+     * constructor used by the server
+     *
+     * @throws IOException
+     */
 
     public Connection(Socket socket) throws IOException {
         in = new Scanner(socket.getInputStream());
@@ -41,10 +45,6 @@ public class Connection {
         return in.hasNextLine();
     }
 
-    public void sendObject(Serializable object) {
-        send(object.toString());
-    }
-
     /**
      * closes connection.
      * notice this may be the only way to cancel the wait for nextLine or hasNextLine
@@ -53,6 +53,4 @@ public class Connection {
         in.close();
         out.close();
     }
-
-
 }
