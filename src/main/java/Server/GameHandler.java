@@ -15,10 +15,10 @@ public class GameHandler {
     private boolean isFull;
 
     GameHandler(int numberOfPlayers){
-        this.numberOfPlayers=numberOfPlayers;
-        clientHandlers=new ArrayList<>();
+        this.numberOfPlayers = numberOfPlayers;
+        clientHandlers = new ArrayList<>();
         players = new ArrayList<>();
-        isFull=false;
+        isFull = false;
     }
 
     public void addPlayer(ClientHandler clientHandler){
@@ -27,15 +27,15 @@ public class GameHandler {
             Player player = new Human();
             players.add(player);
             if (clientHandlers.size()==numberOfPlayers){
-                isFull=true;
+                isFull = true;
             }
         }
     }
 
     public void startGame(){
         int numberOfHumans = clientHandlers.size();
-        if (numberOfHumans<numberOfPlayers){
-            for (int i=0; i<numberOfPlayers-numberOfHumans;i++){
+        if (numberOfHumans < numberOfPlayers){
+            for (int i = 0; i < numberOfPlayers - numberOfHumans; i++){
                 Player bot = new Bot();
                 players.add(bot);
             }
