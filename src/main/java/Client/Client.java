@@ -16,7 +16,7 @@ public class Client {
             String inputFromServer = connection.receive();
             System.out.println(getMessageContent(new Message(inputFromServer)));
             String input = console.nextLine();
-            connection.send(new Message(input,authToken));
+            connection.send(new Message(input,authToken, "0"));
         }
     }
 

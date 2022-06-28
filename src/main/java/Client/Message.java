@@ -6,16 +6,19 @@ public class Message implements Serializable {
 
     private final String content;
     private final String authToken;
+    private final String needInput;
 
-    public Message(String content, String authToken) {
+    public Message(String content, String authToken, String needInput) {
         this.content = content;
         this.authToken = authToken;
+        this.needInput = needInput;
     }
 
     public Message(String message){
         String[] contentToken = message.split("/-/");
         content=contentToken[0];
         authToken=contentToken[1];
+        needInput = contentToken[2];
     }
 
     public String getContent() {
@@ -26,9 +29,17 @@ public class Message implements Serializable {
         return authToken;
     }
 
+    public boolean needInput(){
+        switch (needInput){
+            case "1":
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        return content +"/-/"+authToken;
+        return content +"/-/"+authToken + "/-/" + needInput();
     }
 
 }
