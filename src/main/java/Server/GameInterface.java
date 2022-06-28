@@ -21,10 +21,12 @@ public class GameInterface {
         for (Player player:players.keySet()) {
             if (player instanceof Human) {
                 ClientHandler clientHandler = players.get(player);
-                clientHandler.getConnection().send(new Message(game.getGameState().toString(), clientHandler.getToken()));
-                clientHandler.getConnection().receive();
-                clientHandler.getConnection().send(new Message(player.toString(), clientHandler.getToken()));
-                clientHandler.getConnection().receive();
+                clientHandler.getConnection().send(new Message(game.getGameState().toString(), clientHandler.getToken(),"0"));
+                clientHandler.getConnection().send(new Message(player.toString(), clientHandler.getToken(),"0"));
+                clientHandler.getConnection().send(new Message("what you want to do ?"
+                                                                        + "1.play smallest card"
+                                                                           + "  2.play ninja", clientHandler.getToken(),"0"));
+
 
             }
         }

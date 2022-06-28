@@ -1,5 +1,7 @@
 package Client;
 
+import Game.Game;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -7,21 +9,47 @@ import java.util.Scanner;
 
 public class Client {
     private String authToken;
+    private boolean needInput;
 
     public void init() throws IOException {
         Socket socket = new Socket("localhost",8000);
         Connection connection = new Connection(socket);
         Scanner console = new Scanner(System.in);
-        while (true){
-            String inputFromServer = connection.receive();
-            System.out.println(getMessageContent(new Message(inputFromServer)));
-            String input = console.nextLine();
-            connection.send(new Message(input,authToken, "0"));
+        new Thread(
+                    ()->{
+                        while (true) {
+                            String inputFromServer = connection.receive();
+                            System.out.println(getMessageContent(new Message(inputFromServer)));
+                            synchronized (this) {
+                                this.notify();
+                            }
+                        }}
+            ).start();
+            new Thread(
+                    ()-> {
+                        while (true) {
+                            synchronized (this) {
+                                try {
+                                    this.wait();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (needInput ) {
+                                System.out.println("enter here: ");
+                                String input = console.nextLine();
+                                connection.send(new Message(input, authToken, "0"));
+                                needInput=false;
+                            }
+                        }
+                    }
+            ).start();
+
         }
-    }
 
     private String getMessageContent(Message message){
         authToken=message.getAuthToken();
+        needInput= message.needInput();
         return message.getContent();
     }
 }

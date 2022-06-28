@@ -25,7 +25,7 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         System.out.println("Client Handler is running...");
-        connection.send(new Message("enter your name:  ", token, "1"));
+        connection.send(new Message("enter your name:  ", token,"1"));
         setName();
         ClientToGame();
         waitForStart();
@@ -40,7 +40,7 @@ public class ClientHandler implements Runnable {
     private void ClientToGame(){
         boolean incorrectAnswer = true;
         while (incorrectAnswer){
-            connection.send(new Message("Your token is: " + token + "   1.Create new Game. 2.Join a game.", token, "1"));
+            connection.send(new Message("Your token is: " + token + "   1.Create new Game. 2.Join a game.", token , "1"));
             String inputFromClient = getMessageContent(new Message(connection.receive()));
             switch (inputFromClient) {
                 case "1" :
@@ -54,12 +54,11 @@ public class ClientHandler implements Runnable {
                             this.gameHandler = new GameHandler(numberOfPlayers);
                             server.addGame(gameHandler);
                             gameHandler.addPlayer(this);
-                            connection.send(new Message("Game created successfully. ", token, "0"));
-                            connection.receive();
+                            connection.send(new Message("Game created successfully. ", token,"0"));
                             System.out.println("new Game Created by " + token + " number of players for this game: " + numberOfPlayers);
                             invalidInput = false;
                         } catch (NumberFormatException e) {
-                            connection.send(new Message("Invalid input!", token, "1"));
+                            connection.send(new Message("Invalid input!", token,"0"));
                         }
                     }
                     incorrectAnswer = false;
@@ -80,28 +79,27 @@ public class ClientHandler implements Runnable {
                         availableGameHandler.addPlayer(this);
                         this.gameHandler=availableGameHandler;
                         gameHandler.MessageToHost(name+" joined to the game.");
-                        connection.send(new Message("You successfully joined a game.", token, "0"));
+                        connection.send(new Message("You successfully joined a game.", token,"0"));
                         System.out.println(token + " joined game number " + server.getGameHandlers().indexOf(availableGameHandler));
                         incorrectAnswer = false;
                     } else {
-                        connection.send(new Message("There is no available game.", token, "0"));
+                        connection.send(new Message("There is no available game.", token,"0"));
                     }
                     break;
                 default:
-                    connection.send(new Message("Invalid input!", token, "1"));
+                    connection.send(new Message("Invalid input!", token,"0"));
                     break;
             }
         }
     }
 
     private void waitForStart(){
-        connection.send(new Message("waiting for others to join...",token, "0"));
-        connection.receive();
+        connection.send(new Message("waiting for others to join...",token,"0"));
         if (isHost()){
-            connection.send(new Message("to start the game enter 1",token, "1"));
-            String input = getMessageContent(new Message(connection.receive()));
+            connection.send(new Message("to start the game enter 1",token,"1"));
             boolean invalidInput=true;
             while (invalidInput) {
+                String input = getMessageContent(new Message(connection.receive()));
                 switch (input) {
                     case "1":
                         gameHandler.startGame();
@@ -109,7 +107,7 @@ public class ClientHandler implements Runnable {
                         invalidInput=false;
                         break;
                     default:
-                        connection.send(new Message("Invalid input!", token, "1"));
+                        connection.send(new Message("Invalid input!", token,"0"));
                 }
             }
 

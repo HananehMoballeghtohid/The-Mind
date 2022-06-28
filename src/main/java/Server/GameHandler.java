@@ -44,8 +44,7 @@ public class GameHandler {
         game = new Game(new ArrayList<>(players.keySet()));
         for (ClientHandler clientHandler:clientHandlers){
             Connection connection = clientHandler.getConnection();
-            connection.send(new Message("The game is Started.", clientHandler.getToken()));
-            connection.receive();
+            connection.send(new Message("The game is Started.", clientHandler.getToken(),"0"));
         }
         GameInterface gameInterface = new GameInterface(game,this,players);
         gameInterface.runGame();
@@ -59,8 +58,7 @@ public class GameHandler {
             }
         }
         Connection connection = host.getConnection();
-        connection.send(new Message(message,host.getToken()));
-        connection.receive();
+        connection.send(new Message(message,host.getToken(),"0"));
     }
 
     public void MessageToAnotherClient(String message , String receiverName , String senderName){
@@ -72,7 +70,7 @@ public class GameHandler {
         }
         if (receiver != null) {
             Connection connection = receiver.getConnection();
-            connection.send(new Message(senderName + ": " + message, receiver.getToken()));
+            connection.send(new Message(senderName + ": " + message, receiver.getToken(),"0"));
         }
     }
 
