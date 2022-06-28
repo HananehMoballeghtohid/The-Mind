@@ -25,7 +25,7 @@ public class GameState {
         lives = players.size();
         deck = new Deck();
         ninjas=2;
-        level=1;
+        level=0;
         playedCards = new ArrayList<>();
     }
 
@@ -83,11 +83,11 @@ public class GameState {
     @Override
     public String toString() {
         return "Game state:" +
-                "\nlives: " + lives +
-                "\nninjas: " + ninjas +
-                "\nlevel: " + level +
-                "\nleft cards: " + deck.getSize() +
-                "\nplayed cards: " + playedCards +
-                "\n"; // print player cards
+                " lives: " + lives +
+                " ninjas: " + ninjas +
+                " level: " + level +
+                " left cards: " + deck.getSize() +
+                " played cards: " + playedCards
+                ; // print player cards
     }
 }

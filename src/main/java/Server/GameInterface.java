@@ -1,6 +1,7 @@
 package Server;
 
 import Game.Game;
+import Model.Player.Human;
 import Model.Player.Player;
 
 import java.util.HashMap;
@@ -17,6 +18,21 @@ public class GameInterface {
     }
 
     public void runGame(){
+        for (Player player:players.keySet()) {
+            if (player instanceof Human) {
+                ClientHandler clientHandler = players.get(player);
+                clientHandler.getConnection().send(new Message(game.getGameState().toString(), clientHandler.getToken()));
+                clientHandler.getConnection().receive();
+                clientHandler.getConnection().send(new Message(player.toString(), clientHandler.getToken()));
+                clientHandler.getConnection().receive();
+
+            }
+        }
+    }
+
+    private void sendState(ClientHandler clientHandler){
 
     }
+
+
 }

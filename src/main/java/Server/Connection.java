@@ -35,9 +35,7 @@ public class Connection {
      *  otherwise blocks
      */
     public String receive() {
-        if (in.hasNextLine())
-            return in.nextLine();
-        return null;
+        return in.nextLine();
     }
     /**
      *  @return true if there is new message

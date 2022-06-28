@@ -7,8 +7,13 @@ public class Game {
 
     GameState gameState;
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
     public Game(ArrayList<Player> players){
         gameState = new GameState(players);
+        nextLevel();
     }
 
     public void nextLevel(){

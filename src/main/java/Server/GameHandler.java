@@ -25,7 +25,7 @@ public class GameHandler {
     public void addPlayer(ClientHandler clientHandler){
         if (!isFull) {
             clientHandlers.add(clientHandler);
-            Player player = new Human();
+            Human player = new Human(clientHandler);
             players.put(player,clientHandler);
             if (clientHandlers.size()==numberOfPlayers){
                 isFull = true;
@@ -37,7 +37,7 @@ public class GameHandler {
         int numberOfHumans = clientHandlers.size();
         if (numberOfHumans < numberOfPlayers){
             for (int i = 0; i < numberOfPlayers - numberOfHumans; i++){
-                Player bot = new Bot();
+                Bot bot = new Bot();
                 players.put(bot,null);
             }
         }
@@ -45,7 +45,10 @@ public class GameHandler {
         for (ClientHandler clientHandler:clientHandlers){
             Connection connection = clientHandler.getConnection();
             connection.send(new Message("The game is Started.", clientHandler.getToken()));
+            connection.receive();
         }
+        GameInterface gameInterface = new GameInterface(game,this,players);
+        gameInterface.runGame();
     }
 
     public void MessageToHost(String message){
@@ -57,6 +60,7 @@ public class GameHandler {
         }
         Connection connection = host.getConnection();
         connection.send(new Message(message,host.getToken()));
+        connection.receive();
     }
 
     public void MessageToAnotherClient(String message , String receiverName , String senderName){

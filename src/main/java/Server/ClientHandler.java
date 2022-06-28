@@ -25,7 +25,7 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         System.out.println("Client Handler is running...");
-        connection.send(new Message("enter your name: ", token));
+        connection.send(new Message("enter your name:  ", token));
         setName();
         ClientToGame();
         waitForStart();
@@ -55,6 +55,7 @@ public class ClientHandler implements Runnable {
                             server.addGame(gameHandler);
                             gameHandler.addPlayer(this);
                             connection.send(new Message("Game created successfully. ", token));
+                            connection.receive();
                             System.out.println("new Game Created by " + token + " number of players for this game: " + numberOfPlayers);
                             invalidInput = false;
                         } catch (NumberFormatException e) {
@@ -95,15 +96,21 @@ public class ClientHandler implements Runnable {
 
     private void waitForStart(){
         connection.send(new Message("waiting for others to join...",token));
+        connection.receive();
         if (isHost()){
             connection.send(new Message("to start the game enter 1",token));
             String input = getMessageContent(new Message(connection.receive()));
-            switch (input){
-                case "1":
-                    gameHandler.startGame();
-                    break;
-                default:
-                    connection.send(new Message("Invalid input!",token));
+            boolean invalidInput=true;
+            while (invalidInput) {
+                switch (input) {
+                    case "1":
+                        gameHandler.startGame();
+                        System.out.println("the game is started by " + token);
+                        invalidInput=false;
+                        break;
+                    default:
+                        connection.send(new Message("Invalid input!", token));
+                }
             }
 
         }

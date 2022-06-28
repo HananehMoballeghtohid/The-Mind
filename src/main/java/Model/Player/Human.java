@@ -1,8 +1,15 @@
 package Model.Player;
 
 import Model.Card.NumberCard;
+import Server.ClientHandler;
 
-public class Human extends Player {
+public class Human extends Player implements Runnable {
+    private final ClientHandler clientHandler;
+
+    public Human(ClientHandler clientHandler) {
+        this.clientHandler=clientHandler;
+    }
+
 
     @Override
     public NumberCard play() {
@@ -13,5 +20,10 @@ public class Human extends Player {
     @Override
     public String toString() {
         return "your cards: " + hand.toString();
+    }
+
+    @Override
+    public void run() {
+
     }
 }
