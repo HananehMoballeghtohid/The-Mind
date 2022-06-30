@@ -4,8 +4,13 @@ import Model.Card.NumberCard;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public abstract class Player {
+public abstract class Player extends Thread {
 
+    @Override
+    public void run() {
+
+        //TODO
+    }
 
     ArrayList<NumberCard> hand;
 

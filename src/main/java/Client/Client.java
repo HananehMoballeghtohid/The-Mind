@@ -36,7 +36,6 @@ public class Client {
                                 }
                             }
                             if (needInput ) {
-                                System.out.println("enter here: ");
                                 String input = console.nextLine();
                                 connection.send(new Message(input, authToken, "0"));
                                 needInput=false;
@@ -44,7 +43,6 @@ public class Client {
                         }
                     }
             ).start();
-
         }
 
     private String getMessageContent(Message message){

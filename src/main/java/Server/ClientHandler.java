@@ -40,7 +40,7 @@ public class ClientHandler implements Runnable {
     private void ClientToGame(){
         boolean incorrectAnswer = true;
         while (incorrectAnswer){
-            connection.send(new Message("Your token is: " + token + "   1.Create new Game. 2.Join a game.", token , "1"));
+            connection.send(new Message("Your token is: " + token + "  1.Create new Game. 2.Join a game.", token , "1"));
             String inputFromClient = getMessageContent(new Message(connection.receive()));
             switch (inputFromClient) {
                 case "1" :
