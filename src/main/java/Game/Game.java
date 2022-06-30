@@ -29,7 +29,6 @@ public class Game {
         setHands(level);
         addLife(level);
         addNinjas(level);
-        gameInterface.runGame();
     }
 
     public void startPlayers() {
@@ -69,10 +68,14 @@ public class Game {
             if (player.getHandSize() > 0) {
                 if (player.getCardFromHand(0).getNumber() < card.getNumber()){
                     correctCard = false;
+                    int numberOfLowers = 0;
                     for (NumberCard lowerCard : player.getHand()){
                         if (lowerCard.getNumber() < card.getNumber()){
-                            gameState.addToPlayedCards(lowerCard);
+                            numberOfLowers++;
                         }
+                    }
+                    for (int i=0 ; i<numberOfLowers;i++){
+                        gameState.addToPlayedCards(player.play());
                     }
                 }
             }
@@ -80,7 +83,9 @@ public class Game {
         if (!correctCard){
             reduceLive();
         }
-        nextLevel();
+        if (gameState.totalCardsInGame()==0) {
+            nextLevel();
+        }
     }
 
     private void addLife(int level) {

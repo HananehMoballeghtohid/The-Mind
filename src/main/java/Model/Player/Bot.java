@@ -4,6 +4,10 @@ import Model.Card.NumberCard;
 
 public class Bot extends Player {
 
+    public Bot(){
+        super();
+    }
+
     @Override
     public synchronized NumberCard play() {
         //TODO add time

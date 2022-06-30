@@ -8,6 +8,10 @@ import java.util.TreeMap;
 
 public abstract class Player extends Thread {
 
+    private int id;
+
+    private static int nextId;
+
     ArrayList<NumberCard> hand;
 
     public ArrayList<NumberCard> getHand() {
@@ -16,6 +20,19 @@ public abstract class Player extends Thread {
 
     public void setHand(ArrayList<NumberCard> hand) {
         this.hand = hand;
+    }
+
+    public Player(){
+        id=getNextId();
+    }
+
+    private int getNextId(){
+        nextId++;
+        return nextId;
+    }
+
+    public int getPlayerId(){
+        return id;
     }
 
     @Override

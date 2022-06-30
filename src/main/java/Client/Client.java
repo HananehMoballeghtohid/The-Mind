@@ -3,46 +3,50 @@ package Client;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client {
     private String authToken;
     private boolean needInput;
+    private Thread thread1;
+    private Thread thread2;
 
     public void init() throws IOException {
         Socket socket = new Socket("localhost",8000);
         Connection connection = new Connection(socket);
         Scanner console = new Scanner(System.in);
-        new Thread(
-                    ()->{
-                        while (true) {
+        Runnable  receiveFromServer=()->{
+                        while (connection.isOpen()) {
                             String inputFromServer = connection.receive();
-                            if (inputFromServer.equals("you won!") || inputFromServer.equals("you lost!")) {
-                                break;
+                            if (getMessageContent(new Message(inputFromServer)).equals("you won!")
+                                        || getMessageContent(new Message(inputFromServer)).equals("you lost!")) {
+                                connection.close();
                             }
                             System.out.println(getMessageContent(new Message(inputFromServer)));
                             synchronized (this) {
                                 this.notify();
                             }
-                        }}
-            ).start();
-            new Thread(
-                    ()-> {
-                        while (true) {
-                            synchronized (this) {
-                                try {
-                                    this.wait();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            if (needInput ) {
-                                String input = console.nextLine();
-                                connection.send(new Message(input, authToken, "0"));
-                                needInput=false;
+                        }};
+        Runnable sendToServer=()-> {
+                    while (connection.isOpen()) {
+                        synchronized (this) {
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         }
+                        if (needInput ) {
+                            String input = console.nextLine();
+                            connection.send(new Message(input, authToken, "0"));
+                            needInput=false;
+                        }
                     }
-            ).start();
+                };
+        thread1=new Thread(receiveFromServer);
+        thread2=new Thread(sendToServer);
+        thread1.start();
+        thread2.start();
         }
 
     private String getMessageContent(Message message){
@@ -50,4 +54,5 @@ public class Client {
         needInput= message.needInput();
         return message.getContent();
     }
+
 }

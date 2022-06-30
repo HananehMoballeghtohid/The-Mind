@@ -10,6 +10,7 @@ public class Connection {
 
     private final PrintWriter out;
     private final Scanner in;
+    private boolean open;
 
     /**
      * constructor used by the clients
@@ -20,6 +21,7 @@ public class Connection {
     public Connection(Socket socket) throws IOException {
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream());
+        open=true;
     }
 
     public void send(String message) {
@@ -46,6 +48,10 @@ public class Connection {
         return in.hasNextLine();
     }
 
+    public boolean isOpen(){
+        return open;
+    }
+
     /**
      * closes connection.
      * notice this may be the only way to cancel the wait for nextLine or hasNextLine
@@ -53,5 +59,6 @@ public class Connection {
     public void close() {
         in.close();
         out.close();
+        open=false;
     }
 }

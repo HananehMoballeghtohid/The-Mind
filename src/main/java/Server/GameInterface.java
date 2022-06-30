@@ -51,7 +51,7 @@ public class GameInterface {
                 sendState(player);
                 clientHandler.getConnection().send(
                         new Message("what you want to do? "
-                                + "1.play smallest card" + " 2.play ninja",
+                                + "1.play smallest card " + " 2.play ninja" + " 3.send emoji",
                                 clientHandler.getToken(),
                                 "1"));
                 ((Human) player).setGameInterface(this);
@@ -63,6 +63,10 @@ public class GameInterface {
     private void sendState(Player player) {
         humans.get(player).getConnection().send(
                 new Message(game.getGameState().toString(),
+                        humans.get(player).getToken(),
+                        "0"));
+        humans.get(player).getConnection().send(
+                new Message(game.getGameState().NumberOfCardsForAllPlayers(),
                         humans.get(player).getToken(),
                         "0"));
         humans.get(player).getConnection().send(

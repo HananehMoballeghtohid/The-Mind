@@ -10,6 +10,7 @@ public class Connection {
 
     private final PrintWriter out;
     private final Scanner in;
+    private boolean open;
     /**
      * constructor used by the server
      *
@@ -19,6 +20,7 @@ public class Connection {
     public Connection(Socket socket) throws IOException {
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream());
+        open=true;
     }
 
     public void send(String message) {
@@ -37,6 +39,10 @@ public class Connection {
     public String receive() {
         return in.nextLine();
     }
+
+    public boolean isOpen(){
+        return open;
+    }
     /**
      *  @return true if there is new message
      *  @apiNote This method may block for input
@@ -52,5 +58,6 @@ public class Connection {
     public void close() {
         in.close();
         out.close();
+        open=false;
     }
 }
