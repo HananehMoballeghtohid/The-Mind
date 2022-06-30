@@ -36,12 +36,6 @@ public class Connection {
      *  otherwise blocks
      */
     public String receive() {
-       /* while (in.nextLine() == null) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-            }
-        }*/
         return in.nextLine();
     }
     /**

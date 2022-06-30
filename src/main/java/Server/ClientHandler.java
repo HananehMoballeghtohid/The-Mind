@@ -1,17 +1,20 @@
 package Server;
 
+import Model.Player.Human;
+
 import java.io.IOException;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
-    private final Socket socket ;
+    private final Socket socket;
     private final Connection connection;
-    private final int id ;
+    private final int id;
     private GameHandler gameHandler;
     private boolean host;
     private final Server server;
     private String name;
     private final String token;
+    private int gameNumber;
 
     public ClientHandler(Socket socket, int id , Server server) throws IOException {
         this.connection = new Connection(socket);
@@ -51,7 +54,7 @@ public class ClientHandler implements Runnable {
                         try {
                             int numberOfPlayers = Integer.parseInt(inputNumberOfPlayers);
                             setHost();
-                            this.gameHandler = new GameHandler(numberOfPlayers);
+                            this.gameHandler = new GameHandler(numberOfPlayers, server.getGameHandlers().size());
                             server.addGame(gameHandler);
                             gameHandler.addPlayer(this);
                             connection.send(new Message("Game created successfully. ", token,"0"));

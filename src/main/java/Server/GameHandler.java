@@ -12,22 +12,27 @@ public class GameHandler {
     private final int numberOfPlayers;
     private Game game;
     private final ArrayList<ClientHandler> clientHandlers;
-    private final HashMap<Player,ClientHandler> players;
+    private final HashMap<Player,ClientHandler> humanHashMap;
+    private final ArrayList<Player> players;
     private boolean isFull;
+    private int number;
 
-    GameHandler(int numberOfPlayers){
+    GameHandler(int numberOfPlayers, int number){
         this.numberOfPlayers = numberOfPlayers;
         clientHandlers = new ArrayList<>();
-        players = new HashMap<>();
+        humanHashMap = new HashMap<>();
         isFull = false;
+        this.number = number;
+        players = new ArrayList<>();
     }
 
     public void addPlayer(ClientHandler clientHandler){
         if (!isFull) {
             clientHandlers.add(clientHandler);
-            Human player = new Human(clientHandler);
-            players.put(player,clientHandler);
-            if (clientHandlers.size()==numberOfPlayers){
+            Human human = new Human(clientHandler);
+            players.add(human);
+            humanHashMap.put(human ,clientHandler);
+            if (clientHandlers.size() == numberOfPlayers){
                 isFull = true;
             }
         }
@@ -38,16 +43,19 @@ public class GameHandler {
         if (numberOfHumans < numberOfPlayers){
             for (int i = 0; i < numberOfPlayers - numberOfHumans; i++){
                 Bot bot = new Bot();
-                players.put(bot,null);
+                players.add(bot);
             }
         }
-        game = new Game(new ArrayList<>(players.keySet()));
+        game = new Game(players);
+        game.setGameNumber(number);
         for (ClientHandler clientHandler:clientHandlers){
             Connection connection = clientHandler.getConnection();
             connection.send(new Message("The game is Started.", clientHandler.getToken(),"0"));
         }
-        GameInterface gameInterface = new GameInterface(game,this,players);
+        GameInterface gameInterface = new GameInterface(game,this, humanHashMap);
+        game.setGameInterface(gameInterface);
         gameInterface.runGame();
+        game.startPlayers();
     }
 
     public void MessageToHost(String message){

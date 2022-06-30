@@ -1,11 +1,15 @@
 package Game;
 import Model.Card.NumberCard;
 import Model.Player.Player;
+import Server.GameInterface;
+
 import java.util.ArrayList;
 
 public class Game {
 
-    GameState gameState;
+    private GameState gameState;
+    private int gameNumber;
+    private GameInterface gameInterface;
 
     public GameState getGameState() {
         return gameState;
@@ -13,15 +17,25 @@ public class Game {
 
     public Game(ArrayList<Player> players){
         gameState = new GameState(players);
-        nextLevel();
+        int level = 1;
+        gameState.setLevel(level);
+        setHands(level);
+        addLife(level);
+        addNinjas(level);
     }
-
     public void nextLevel(){
         int level = gameState.getLevel() + 1;
         gameState.setLevel(level);
         setHands(level);
         addLife(level);
         addNinjas(level);
+        gameInterface.runGame();
+    }
+
+    public void startPlayers() {
+        for (Player player : gameState.getPlayers()) {
+            player.start();
+        }
     }
 
     public void reduceLive(){
@@ -48,23 +62,25 @@ public class Game {
         return gameState.getLevel() > 12;
     }
 
-    public void playCard(NumberCard card){
+    public synchronized void playCard(NumberCard card) {
         gameState.addToPlayedCards(0, card);
         boolean correctCard = true;
-        for (Player player:gameState.getPlayers()){
-            if (player.getCardFromHand(0).getNumber()<card.getNumber()){
-                correctCard = false;
-                for (NumberCard lowerCard:player.getHand()){
-                    if (lowerCard.getNumber()<card.getNumber()){
-                        gameState.addToPlayedCards(card);
+        for (Player player : gameState.getPlayers() ){
+            if (player.getHandSize() > 0) {
+                if (player.getCardFromHand(0).getNumber() < card.getNumber()){
+                    correctCard = false;
+                    for (NumberCard lowerCard : player.getHand()){
+                        if (lowerCard.getNumber() < card.getNumber()){
+                            gameState.addToPlayedCards(lowerCard);
+                        }
                     }
                 }
-                player.getHand().removeAll(gameState.getPlayedCards());
             }
         }
         if (!correctCard){
             reduceLive();
         }
+        nextLevel();
     }
 
     private void addLife(int level) {
@@ -100,5 +116,21 @@ public class Game {
                 player.getHand().removeAll(gameState.getPlayedCards());
             }
         }
+    }
+
+    public int getGameNumber() {
+        return gameNumber;
+    }
+
+    public void setGameNumber(int gameNumber) {
+        this.gameNumber = gameNumber;
+    }
+
+    public GameInterface getGameInterface() {
+        return gameInterface;
+    }
+
+    public void setGameInterface(GameInterface gameInterface) {
+        this.gameInterface = gameInterface;
     }
 }

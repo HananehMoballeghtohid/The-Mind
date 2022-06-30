@@ -1,16 +1,12 @@
 package Model.Player;
 
 import Model.Card.NumberCard;
+import Server.Connection;
+
 import java.util.ArrayList;
 import java.util.TreeMap;
 
 public abstract class Player extends Thread {
-
-    @Override
-    public void run() {
-
-        //TODO
-    }
 
     ArrayList<NumberCard> hand;
 
@@ -21,6 +17,9 @@ public abstract class Player extends Thread {
     public void setHand(ArrayList<NumberCard> hand) {
         this.hand = hand;
     }
+
+    @Override
+    public abstract void run();
 
     public abstract NumberCard play();
 
@@ -36,5 +35,8 @@ public abstract class Player extends Thread {
     }
     public NumberCard getCardFromHand(int i) {
         return hand.get(i);
+    }
+    public int getHandSize() {
+        return hand.size();
     }
 }

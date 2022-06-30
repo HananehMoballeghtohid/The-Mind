@@ -27,7 +27,6 @@ public class Server {
             System.out.println("New connection Accepted.");
             clientHandlers.add(clientHandler);
             new Thread(clientHandler).start();
-
         }
     }
 

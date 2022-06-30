@@ -1,9 +1,6 @@
 package Client;
 
-import Game.Game;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -19,6 +16,9 @@ public class Client {
                     ()->{
                         while (true) {
                             String inputFromServer = connection.receive();
+                            if (inputFromServer.equals("you won!") || inputFromServer.equals("you lost!")) {
+                                break;
+                            }
                             System.out.println(getMessageContent(new Message(inputFromServer)));
                             synchronized (this) {
                                 this.notify();
