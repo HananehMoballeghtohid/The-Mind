@@ -54,8 +54,8 @@ public class GameInterface {
                                 + "1.play smallest card " + " 2.play ninja" + " 3.send emoji",
                                 clientHandler.getToken(),
                                 "1"));
-                ((Human) player).setGameInterface(this);
             }
+            player.setGameInterface(this);
             semaphore.release(1);
         }
     }

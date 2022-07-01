@@ -42,7 +42,7 @@ public class GameHandler {
         int numberOfHumans = clientHandlers.size();
         if (numberOfHumans < numberOfPlayers){
             for (int i = 0; i < numberOfPlayers - numberOfHumans; i++){
-                Bot bot = new Bot();
+                Bot bot = new Bot(i);
                 players.add(bot);
             }
         }

@@ -1,14 +1,21 @@
 package Game;
 import Model.Card.NumberCard;
+import Model.Player.Bot;
 import Model.Player.Player;
-
-import javax.crypto.MacSpi;
 import java.util.ArrayList;
 
 public class Game {
 
     private GameState gameState;
     private int gameNumber;
+
+    /**
+     * the variable is going to let
+     * bots know if they are playing as
+     * the first player in the round
+     * or someone played before them.
+     */
+    private boolean isFirstPlay = true;
 
     public GameState getGameState() {
         return gameState;
@@ -32,6 +39,9 @@ public class Game {
 
     public void startPlayers() {
         for (Player player : gameState.getPlayers()) {
+            if (player instanceof Bot) {
+                ((Bot) player).setTime();
+            }
             player.start();
         }
     }
@@ -64,6 +74,9 @@ public class Game {
         gameState.addToPlayedCards(0, card);
         boolean correctCard = true;
         for (Player player : gameState.getPlayers() ){
+            if (player instanceof Bot) {
+                player.interrupt();
+            }
             if (player.getHandSize() > 0) {
                 if (player.getCardFromHand(0).getNumber() < card.getNumber()){
                     correctCard = false;
@@ -73,8 +86,8 @@ public class Game {
                             numberOfLowers++;
                         }
                     }
-                    for (int i=0 ; i<numberOfLowers;i++){
-                        gameState.addToPlayedCards(player.play());
+                    for (int i = 0; i < numberOfLowers; i++){
+                        gameState.addToPlayedCards(0, player.play());
                     }
                 }
             }
@@ -82,7 +95,9 @@ public class Game {
         if (!correctCard){
             reduceLive();
         }
+        isFirstPlay = false;
         if (gameState.totalCardsInGame()==0) {
+            isFirstPlay = true;
             nextLevel();
         }
     }
@@ -118,7 +133,7 @@ public class Game {
                 if (player.getCardFromHand(0).getNumber() < max.getNumber()){
                     for (NumberCard playerCard : player.getHand()){
                         if (playerCard.getNumber() < max.getNumber()){
-                            gameState.addToPlayedCards(playerCard);
+                            gameState.addToPlayedCards(0, playerCard);
                         }
                     }
                     player.getHand().removeAll(gameState.getPlayedCards());
@@ -127,6 +142,7 @@ public class Game {
         }
         gameState.setNinjas(gameState.getNinjas() - 1);
         nextLevel();
+        isFirstPlay = true;
     }
 
     public int getGameNumber() {
@@ -137,4 +153,7 @@ public class Game {
         this.gameNumber = gameNumber;
     }
 
+    public boolean isFirstPlay() {
+        return isFirstPlay;
+    }
 }

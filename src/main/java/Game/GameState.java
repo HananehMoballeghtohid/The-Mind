@@ -110,4 +110,8 @@ public class GameState {
                 " played cards: " + playedCards
                 ; // print player cards
     }
+
+    public int getLastPlayerCard() {
+        return playedCards.get(0).getNumber();
+    }
 }

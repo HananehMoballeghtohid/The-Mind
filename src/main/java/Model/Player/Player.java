@@ -2,6 +2,7 @@ package Model.Player;
 
 import Model.Card.NumberCard;
 import Server.Connection;
+import Server.GameInterface;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -56,4 +57,6 @@ public abstract class Player extends Thread {
     public int getHandSize() {
         return hand.size();
     }
+
+    public abstract void setGameInterface(GameInterface gameInterface);
 }
