@@ -46,7 +46,7 @@ public class Human extends Player {
                             gameInterface.runGame();
                         }
                         else {
-                            clientHandler.getConnection().send(new Message("You don't have any cards left.\n"
+                            clientHandler.getConnection().send(new Message("You don't have any cards left."
                                             ,clientHandler.getToken(),"1"));
                         }
                         break;
@@ -57,15 +57,34 @@ public class Human extends Player {
                             gameInterface.getGame().playNinja();
                             gameInterface.runGame();
                         } else {
-                            clientHandler.getConnection().send(new Message("There are no Ninja cards.\n"
+                            clientHandler.getConnection().send(new Message("There are no Ninja cards."
                                     ,clientHandler.getToken(),"1"));
                         }
                         break;
                     case "3":
-                        //send emoji
+                        clientHandler.getConnection().send(new Message("Enter the emoji you want to send."
+                                ,clientHandler.getToken(),"1"));
+                        input =  getMessageContent(new Message(clientHandler.getConnection().receive()));
+                        switch (input){
+                            case ":)":
+                            case ":D":
+                            case ":|":
+                            case "<3":
+                            case ":/":
+                            case ":(":
+                                clientHandler.getConnection().send(new Message("Emoji sent!"
+                                        ,clientHandler.getToken(),"1"));
+                                clientHandler.getGameHandler().MessageToAllClients(input,clientHandler.getName());
+                                System.out.println(clientHandler.getName() + " said " + input);
+                                break;
+                            default:
+                                clientHandler.getConnection().send(new Message("you just can send simple emojis!"
+                                        ,clientHandler.getToken(),"1"));
+                                break;
+                        }
                         break;
                     default:
-                        clientHandler.getConnection().send(new Message("Invalid input!\n"
+                        clientHandler.getConnection().send(new Message("Invalid input!"
                                 , clientHandler.getToken(),
                                 "1"));
                 }

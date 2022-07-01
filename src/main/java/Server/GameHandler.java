@@ -69,16 +69,12 @@ public class GameHandler {
         connection.send(new Message(message,host.getToken(),"0"));
     }
 
-    public void MessageToAnotherClient(String message , String receiverName , String senderName){
-        ClientHandler receiver = null;
+    public void MessageToAllClients(String message , String senderName){
         for (ClientHandler m:clientHandlers){
-            if (m.getName().equals(receiverName)){
-                receiver=m;
+            if (!m.getName().equals(senderName)){
+                Connection connection = m.getConnection();
+                connection.send(new Message(senderName + ": " + message, m.getToken(),"0"));
             }
-        }
-        if (receiver != null) {
-            Connection connection = receiver.getConnection();
-            connection.send(new Message(senderName + ": " + message, receiver.getToken(),"0"));
         }
     }
 

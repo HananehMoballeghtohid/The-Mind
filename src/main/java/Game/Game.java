@@ -141,8 +141,11 @@ public class Game {
             }
         }
         gameState.setNinjas(gameState.getNinjas() - 1);
-        nextLevel();
-        isFirstPlay = true;
+        isFirstPlay = false;
+        if (gameState.totalCardsInGame()==0) {
+            isFirstPlay = true;
+            nextLevel();
+        }
     }
 
     public int getGameNumber() {

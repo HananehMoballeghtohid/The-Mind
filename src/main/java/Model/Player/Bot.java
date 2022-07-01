@@ -56,6 +56,5 @@ public class Bot extends Player {
             dif = hand.get(0).getNumber();
         }
         waitingTime = dif*(1000);
-        System.out.println(waitingTime);
     }
 }

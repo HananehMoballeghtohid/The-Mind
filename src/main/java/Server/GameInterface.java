@@ -31,6 +31,7 @@ public class GameInterface {
                         ClientHandler clientHandler = humans.get(player);
                         clientHandler.getConnection().send(new Message(
                                 "you lost!" , clientHandler.getToken(), "0"));
+                        System.out.println("Game"+game.getGameNumber()+" is over.");
                         clientHandler.getConnection().close();
                     }
                 }
@@ -40,6 +41,7 @@ public class GameInterface {
                         ClientHandler clientHandler = humans.get(player);
                         clientHandler.getConnection().send(new Message(
                                 "you won!" , clientHandler.getToken(), "0"));
+                        System.out.println("Game"+game.getGameNumber()+" is over.");
                         clientHandler.getConnection().close();
                     }
                 }
