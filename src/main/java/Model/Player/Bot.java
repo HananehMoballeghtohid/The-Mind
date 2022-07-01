@@ -24,24 +24,22 @@ public class Bot extends Player {
     @Override
     public void run() {
         while (true) {
-            try {
-                sleep(waitingTime);
-                break;
-            } catch (InterruptedException e) {
-                setTime();
-            }
-        }
-        if (!hand.isEmpty()) {
-            try {
-                gameInterface.getSemaphore().acquire();
-                System.out.println( "bot" + id + " from game" +
-                        gameInterface.getGame().getGameNumber() + " played.");
-                gameInterface.sendPlayerPlayed(this);
-                gameInterface.getGame().playCard(play());
-                gameInterface.runGame();
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!hand.isEmpty()) {
+                try {
+                    sleep(waitingTime);
+                    try {
+                        gameInterface.getSemaphore().acquire();
+                        System.out.println( "bot" + id + " from game" +
+                                gameInterface.getGame().getGameNumber() + " played.");
+                        gameInterface.sendPlayerPlayed(this);
+                        gameInterface.getGame().playCard(play());
+                        gameInterface.runGame();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } catch (InterruptedException e) {
+                    setTime();
+                }
             }
         }
     }
@@ -57,7 +55,7 @@ public class Bot extends Player {
         } else {
             dif = hand.get(0).getNumber();
         }
-        waitingTime = dif*(500);
+        waitingTime = dif*(1000);
         System.out.println(waitingTime);
     }
 }
