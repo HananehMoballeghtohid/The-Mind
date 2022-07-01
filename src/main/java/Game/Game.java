@@ -1,15 +1,14 @@
 package Game;
 import Model.Card.NumberCard;
 import Model.Player.Player;
-import Server.GameInterface;
 
+import javax.crypto.MacSpi;
 import java.util.ArrayList;
 
 public class Game {
 
     private GameState gameState;
     private int gameNumber;
-    private GameInterface gameInterface;
 
     public GameState getGameState() {
         return gameState;
@@ -102,25 +101,32 @@ public class Game {
         }
     }
 
-    private void playNinja() {
+    public void playNinja() {
         NumberCard max = new NumberCard(0);
         for (Player player : gameState.getPlayers()) {
-            NumberCard played = player.play();
-            gameState.addToPlayedCards(played);
+            NumberCard played = new NumberCard(-1);
+            if (player.getHandSize() != 0) {
+                played = player.play();
+                gameState.addToPlayedCards(played);
+            }
             if (played.getNumber() > max.getNumber()) {
                 max = played;
             }
         }
         for (Player player : gameState.getPlayers()){
-            if (player.getCardFromHand(0).getNumber() < max.getNumber()){
-                for (NumberCard playerCard : player.getHand()){
-                    if (playerCard.getNumber() < max.getNumber()){
-                        gameState.addToPlayedCards(playerCard);
+            if (player.getHandSize() != 0) {
+                if (player.getCardFromHand(0).getNumber() < max.getNumber()){
+                    for (NumberCard playerCard : player.getHand()){
+                        if (playerCard.getNumber() < max.getNumber()){
+                            gameState.addToPlayedCards(playerCard);
+                        }
                     }
+                    player.getHand().removeAll(gameState.getPlayedCards());
                 }
-                player.getHand().removeAll(gameState.getPlayedCards());
             }
         }
+        gameState.setNinjas(gameState.getNinjas() - 1);
+        nextLevel();
     }
 
     public int getGameNumber() {
@@ -131,11 +137,4 @@ public class Game {
         this.gameNumber = gameNumber;
     }
 
-    public GameInterface getGameInterface() {
-        return gameInterface;
-    }
-
-    public void setGameInterface(GameInterface gameInterface) {
-        this.gameInterface = gameInterface;
-    }
 }

@@ -15,7 +15,7 @@ public class GameHandler {
     private final HashMap<Player,ClientHandler> humanHashMap;
     private final ArrayList<Player> players;
     private boolean isFull;
-    private int number;
+    private final int number;
 
     GameHandler(int numberOfPlayers, int number){
         this.numberOfPlayers = numberOfPlayers;
@@ -53,7 +53,6 @@ public class GameHandler {
             connection.send(new Message("The game is Started.", clientHandler.getToken(),"0"));
         }
         GameInterface gameInterface = new GameInterface(game,this, humanHashMap);
-        game.setGameInterface(gameInterface);
         gameInterface.runGame();
         game.startPlayers();
     }
@@ -65,6 +64,7 @@ public class GameHandler {
                 host=m;
             }
         }
+        assert host != null;
         Connection connection = host.getConnection();
         connection.send(new Message(message,host.getToken(),"0"));
     }

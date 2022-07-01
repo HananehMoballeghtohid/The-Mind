@@ -3,19 +3,16 @@ package Client;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client {
     private String authToken;
     private boolean needInput;
-    private Thread thread1;
-    private Thread thread2;
 
     public void init() throws IOException {
         Socket socket = new Socket("localhost",8000);
         Connection connection = new Connection(socket);
         Scanner console = new Scanner(System.in);
-        Runnable  receiveFromServer=()->{
+        Runnable  receiveFromServer = () -> {
                         while (connection.isOpen()) {
                             String inputFromServer = connection.receive();
                             if (getMessageContent(new Message(inputFromServer)).equals("you won!")
@@ -27,7 +24,7 @@ public class Client {
                                 this.notify();
                             }
                         }};
-        Runnable sendToServer=()-> {
+        Runnable sendToServer = () -> {
                     while (connection.isOpen()) {
                         synchronized (this) {
                             try {
@@ -43,8 +40,8 @@ public class Client {
                         }
                     }
                 };
-        thread1=new Thread(receiveFromServer);
-        thread2=new Thread(sendToServer);
+        Thread thread1 = new Thread(receiveFromServer);
+        Thread thread2 = new Thread(sendToServer);
         thread1.start();
         thread2.start();
         }

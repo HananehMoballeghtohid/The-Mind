@@ -6,7 +6,6 @@ import Model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 public class GameState {
 
@@ -20,7 +19,7 @@ public class GameState {
 
     private Deck deck;
 
-    private ArrayList<NumberCard> playedCards;
+    private final ArrayList<NumberCard> playedCards;
 
     public GameState(ArrayList<Player> players){
         this.players =players;
@@ -33,10 +32,6 @@ public class GameState {
 
     public ArrayList<Player> getPlayers() {
         return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
     }
 
     public int getLives() {
@@ -65,10 +60,6 @@ public class GameState {
 
     public Deck getDeck() {
         return deck;
-    }
-
-    public NumberCard getPlayedCard(int i) {
-        return playedCards.get(i);
     }
 
     public void addToPlayedCards(int i, NumberCard card) {
@@ -101,12 +92,12 @@ public class GameState {
     }
 
     public String NumberOfCardsForAllPlayers(){
-        String numberOfCards = "Players cards: ";
+        StringBuilder numberOfCards = new StringBuilder("Players cards: ");
         HashMap<Player,Integer> playersNumberOfCards = playersNumberOfCards();
         for (Player player:playersNumberOfCards.keySet()){
-            numberOfCards += "Player " + player.getPlayerId() +": " + player.getHandSize()  + "  ";
+            numberOfCards.append("Player ").append(player.getPlayerId()).append(": ").append(player.getHandSize()).append("  ");
         }
-        return numberOfCards;
+        return numberOfCards.toString();
     }
 
     @Override

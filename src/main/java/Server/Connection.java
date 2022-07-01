@@ -1,7 +1,6 @@
 package Server;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -13,8 +12,6 @@ public class Connection {
     private boolean open;
     /**
      * constructor used by the server
-     *
-     * @throws IOException
      */
 
     public Connection(Socket socket) throws IOException {
@@ -42,13 +39,6 @@ public class Connection {
 
     public boolean isOpen(){
         return open;
-    }
-    /**
-     *  @return true if there is new message
-     *  @apiNote This method may block for input
-     */
-    public boolean hasNextLine() {
-        return in.hasNextLine();
     }
 
     /**

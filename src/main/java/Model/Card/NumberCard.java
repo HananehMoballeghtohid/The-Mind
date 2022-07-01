@@ -1,5 +1,4 @@
 package Model.Card;
-import Model.Player.Player;
 
 public class NumberCard {
 
@@ -11,10 +10,6 @@ public class NumberCard {
 
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     @Override

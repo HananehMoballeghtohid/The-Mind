@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
 public class GameInterface {
-    private Semaphore semaphore = new Semaphore(1);
+    private final Semaphore semaphore = new Semaphore(1);
     private final Game game;
     private final GameHandler gameHandler;
     private final HashMap<Player,ClientHandler> humans;
@@ -81,14 +81,6 @@ public class GameInterface {
 
     public Game getGame() {
         return game;
-    }
-
-    public GameHandler getGameHandler() {
-        return gameHandler;
-    }
-
-    public ClientHandler getClientHandler (Human human) {
-        return humans.get(human);
     }
 
     public void sendPlayerPlayed(Player played) {

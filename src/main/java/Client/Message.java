@@ -30,11 +30,7 @@ public class Message implements Serializable {
     }
 
     public boolean needInput(){
-        switch (needInput){
-            case "1":
-                return true;
-        }
-        return false;
+        return needInput.equals("1");
     }
 
     @Override

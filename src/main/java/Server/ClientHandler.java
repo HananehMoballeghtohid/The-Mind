@@ -14,7 +14,6 @@ public class ClientHandler implements Runnable {
     private final Server server;
     private String name;
     private final String token;
-    private int gameNumber;
 
     public ClientHandler(Socket socket, int id , Server server) throws IOException {
         this.connection = new Connection(socket);

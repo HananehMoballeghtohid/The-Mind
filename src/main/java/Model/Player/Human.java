@@ -46,19 +46,26 @@ public class Human extends Player {
                             gameInterface.runGame();
                         }
                         else {
-                            clientHandler.getConnection().send(new Message("You don't have any cards left."
+                            clientHandler.getConnection().send(new Message("You don't have any cards left.\n"
                                             ,clientHandler.getToken(),"1"));
                         }
                         break;
                     case "2" :
-                        //play ninja;
+                        if (gameInterface.getGame().getGameState().getNinjas() != 0) {
+                            System.out.println(clientHandler.getName() + " from game" +
+                                    clientHandler.getGameHandler().getGame().getGameNumber() + " played.");
+                            gameInterface.getGame().playNinja();
+                            gameInterface.runGame();
+                        } else {
+                            clientHandler.getConnection().send(new Message("There are no Ninja cards.\n"
+                                    ,clientHandler.getToken(),"1"));
+                        }
                         break;
-
                     case "3":
-                        //send message
+                        //send emoji
                         break;
                     default:
-                        clientHandler.getConnection().send(new Message("Invalid input!"
+                        clientHandler.getConnection().send(new Message("Invalid input!\n"
                                 , clientHandler.getToken(),
                                 "1"));
                 }
