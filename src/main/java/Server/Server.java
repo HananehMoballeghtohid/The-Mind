@@ -1,7 +1,7 @@
 package Server;
 
 import AuthenticationToken.AuthTokenGenerator;
-
+import config.config;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,7 +19,8 @@ public class Server {
 
     public void init() throws IOException {
         System.out.println("Server is Running");
-        ServerSocket serverSocket = new ServerSocket(8000);
+        config config=new config();
+        ServerSocket serverSocket = new ServerSocket(config.getPort());
         System.out.println("Waiting for a connection");
         while (true){
             Socket socket = serverSocket.accept();

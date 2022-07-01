@@ -3,13 +3,15 @@ package Client;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
+import config.config;
 
 public class Client {
     private String authToken;
     private boolean needInput;
 
     public void init() throws IOException {
-        Socket socket = new Socket("localhost",8000);
+        config config = new config();
+        Socket socket = new Socket(config.getHost(),config.getPort());
         Connection connection = new Connection(socket);
         Scanner console = new Scanner(System.in);
         Runnable  receiveFromServer = () -> {
