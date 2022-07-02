@@ -52,6 +52,7 @@ public class GameHandler {
             Connection connection = clientHandler.getConnection();
             connection.send(new Message("The game is Started.", clientHandler.getToken(),"0"));
         }
+        isFull=true;
         GameInterface gameInterface = new GameInterface(game,this, humanHashMap);
         gameInterface.runGame();
         game.startPlayers();

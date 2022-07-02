@@ -1,7 +1,6 @@
 package Model.Player;
 
 import Model.Card.NumberCard;
-import Server.Connection;
 import Server.GameInterface;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.TreeMap;
 
 public abstract class Player extends Thread {
 
-    private int id;
+    private final int id;
 
     private static int nextId;
 

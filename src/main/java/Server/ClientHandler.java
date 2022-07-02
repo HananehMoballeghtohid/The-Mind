@@ -1,24 +1,18 @@
 package Server;
 
-import Model.Player.Human;
-
 import java.io.IOException;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
-    private final Socket socket;
     private final Connection connection;
-    private final int id;
     private GameHandler gameHandler;
     private boolean host;
     private final Server server;
     private String name;
     private final String token;
 
-    public ClientHandler(Socket socket, int id , Server server) throws IOException {
+    public ClientHandler(Socket socket, Server server) throws IOException {
         this.connection = new Connection(socket);
-        this.socket = socket;
-        this.id = id;
         host = false;
         this.server = server;
         token = server.getAuthTokenGenerator().nextToken();
@@ -45,7 +39,7 @@ public class ClientHandler implements Runnable {
             connection.send(new Message("Your token is: " + token + "  1.Create new Game. 2.Join a game.", token , "1"));
             String inputFromClient = getMessageContent(new Message(connection.receive()));
             switch (inputFromClient) {
-                case "1" :
+                case "1" -> {
                     boolean invalidInput = true;
                     while (invalidInput) {
                         connection.send(new Message("Enter number of players: ", token, "1"));
@@ -56,16 +50,16 @@ public class ClientHandler implements Runnable {
                             this.gameHandler = new GameHandler(numberOfPlayers, server.getGameHandlers().size());
                             server.addGame(gameHandler);
                             gameHandler.addPlayer(this);
-                            connection.send(new Message("Game created successfully. ", token,"0"));
+                            connection.send(new Message("Game created successfully. ", token, "0"));
                             System.out.println("new Game Created by " + token + " number of players for this game: " + numberOfPlayers);
                             invalidInput = false;
                         } catch (NumberFormatException e) {
-                            connection.send(new Message("Invalid input!", token,"0"));
+                            connection.send(new Message("Invalid input!", token, "0"));
                         }
                     }
                     incorrectAnswer = false;
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     boolean availableGame = false;
                     GameHandler availableGameHandler = null;
                     if (server.getGameHandlers().size() != 0) {
@@ -79,18 +73,16 @@ public class ClientHandler implements Runnable {
                     }
                     if (availableGame) {
                         availableGameHandler.addPlayer(this);
-                        this.gameHandler=availableGameHandler;
-                        gameHandler.MessageToHost(name+" joined to the game.");
-                        connection.send(new Message("You successfully joined a game.", token,"0"));
+                        this.gameHandler = availableGameHandler;
+                        gameHandler.MessageToHost(name + " joined to the game.");
+                        connection.send(new Message("You successfully joined a game.", token, "0"));
                         System.out.println(token + " joined game number " + server.getGameHandlers().indexOf(availableGameHandler));
                         incorrectAnswer = false;
                     } else {
-                        connection.send(new Message("There is no available game.", token,"0"));
+                        connection.send(new Message("There is no available game.", token, "0"));
                     }
-                    break;
-                default:
-                    connection.send(new Message("Invalid input!", token,"0"));
-                    break;
+                }
+                default -> connection.send(new Message("Invalid input!", token, "0"));
             }
         }
     }
@@ -102,14 +94,12 @@ public class ClientHandler implements Runnable {
             boolean invalidInput=true;
             while (invalidInput) {
                 String input = getMessageContent(new Message(connection.receive()));
-                switch (input) {
-                    case "1":
-                        gameHandler.startGame();
-                        System.out.println("the game is started by " + token);
-                        invalidInput=false;
-                        break;
-                    default:
-                        connection.send(new Message("Invalid input!", token,"0"));
+                if ("1".equals(input)) {
+                    gameHandler.startGame();
+                    System.out.println("the game is started by " + token);
+                    invalidInput = false;
+                } else {
+                    connection.send(new Message("Invalid input!", token, "0"));
                 }
             }
 

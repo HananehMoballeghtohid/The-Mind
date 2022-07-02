@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class GameState {
 
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     private int lives;
 
@@ -17,7 +17,7 @@ public class GameState {
 
     private int level;
 
-    private Deck deck;
+    private final Deck deck;
 
     private final ArrayList<NumberCard> playedCards;
 

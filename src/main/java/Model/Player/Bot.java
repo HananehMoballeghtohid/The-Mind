@@ -6,7 +6,7 @@ import Server.GameInterface;
 public class Bot extends Player {
 
     private GameInterface gameInterface;
-    private int id;
+    private final int id;
     private int waitingTime;
 
     public Bot(int id){

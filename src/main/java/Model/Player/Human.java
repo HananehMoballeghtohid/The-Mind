@@ -65,22 +65,15 @@ public class Human extends Player {
                         clientHandler.getConnection().send(new Message("Enter the emoji you want to send."
                                 ,clientHandler.getToken(),"1"));
                         input =  getMessageContent(new Message(clientHandler.getConnection().receive()));
-                        switch (input){
-                            case ":)":
-                            case ":D":
-                            case ":|":
-                            case "<3":
-                            case ":/":
-                            case ":(":
+                        switch (input) {
+                            case ":)", ":D", ":|", "<3", ":/", ":(" -> {
                                 clientHandler.getConnection().send(new Message("Emoji sent!"
-                                        ,clientHandler.getToken(),"1"));
-                                clientHandler.getGameHandler().MessageToAllClients(input,clientHandler.getName());
+                                        , clientHandler.getToken(), "1"));
+                                clientHandler.getGameHandler().MessageToAllClients(input, clientHandler.getName());
                                 System.out.println(clientHandler.getName() + " said " + input);
-                                break;
-                            default:
-                                clientHandler.getConnection().send(new Message("you just can send simple emojis!"
-                                        ,clientHandler.getToken(),"1"));
-                                break;
+                            }
+                            default -> clientHandler.getConnection().send(new Message("you just can send simple emojis!"
+                                    , clientHandler.getToken(), "1"));
                         }
                         break;
                     default:

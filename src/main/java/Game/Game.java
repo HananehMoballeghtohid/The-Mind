@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private GameState gameState;
+    private final GameState gameState;
     private int gameNumber;
 
     /**

@@ -98,7 +98,4 @@ public class GameInterface {
         }
     }
 
-    public HashMap<Player, ClientHandler> getHumans() {
-        return humans;
-    }
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Server {
     private final ArrayList<ClientHandler> clientHandlers;
     private final ArrayList<GameHandler> gameHandlers;
-    private AuthTokenGenerator authTokenGenerator = new AuthTokenGenerator();
+    private final AuthTokenGenerator authTokenGenerator = new AuthTokenGenerator();
 
     public Server(){
         clientHandlers = new ArrayList<>();
@@ -24,7 +24,7 @@ public class Server {
         System.out.println("Waiting for a connection");
         while (true){
             Socket socket = serverSocket.accept();
-            ClientHandler clientHandler = new ClientHandler(socket,clientHandlers.size(),this);
+            ClientHandler clientHandler = new ClientHandler(socket, this);
             System.out.println("New connection Accepted.");
             clientHandlers.add(clientHandler);
             new Thread(clientHandler).start();
@@ -39,15 +39,8 @@ public class Server {
         return gameHandlers;
     }
 
-    public ArrayList<ClientHandler> getClientHandlers() {
-        return clientHandlers;
-    }
-
     public AuthTokenGenerator getAuthTokenGenerator() {
         return authTokenGenerator;
     }
 
-    public void setAuthTokenGenerator(AuthTokenGenerator authTokenGenerator) {
-        this.authTokenGenerator = authTokenGenerator;
-    }
 }
